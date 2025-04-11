@@ -1,5 +1,6 @@
 package com.example.sem3b_lab_1.artista;
 
+import com.example.sem3b_lab_1.exceptions.ResourceConflictException;
 import com.example.sem3b_lab_1.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,12 @@ public class ArtistaController {
 
     @PostMapping
     ResponseEntity<Artista> createArtista(@RequestBody Artista artista) {
-        return ResponseEntity.ok(artistaRepository.save(artista));
+        Optional<Artista> foundArtistaByUsername = artistaRepository.findByUsername(artista.getUsername());
+
+        if (foundArtistaByUsername.isEmpty())
+            return ResponseEntity.ok(artistaRepository.save(artista));
+
+        throw new ResourceConflictException("El artista con username " + artista.getUsername() + " ya existe");
     }
 
     @GetMapping("/{id}")
