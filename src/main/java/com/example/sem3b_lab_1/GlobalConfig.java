@@ -1,5 +1,6 @@
 package com.example.sem3b_lab_1;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

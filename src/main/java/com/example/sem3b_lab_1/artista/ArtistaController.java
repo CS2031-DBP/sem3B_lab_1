@@ -4,6 +4,7 @@ import com.example.sem3b_lab_1.dto.NewArtistaDto;
 import com.example.sem3b_lab_1.exceptions.ResourceConflictException;
 import com.example.sem3b_lab_1.exceptions.ResourceNotFoundException;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +18,14 @@ public class ArtistaController {
     @Autowired
     ArtistaRepository artistaRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
 
     @PostMapping
     ResponseEntity<Artista> createArtista(@Valid @RequestBody NewArtistaDto artista) {
         Artista newArtista = new Artista();
-        newArtista.setUsername(artista.getUsername());
+        modelMapper.map(artista, newArtista);
 
         Optional<Artista> foundArtistaByUsername = artistaRepository.findByUsername(newArtista.getUsername());
 
