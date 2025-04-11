@@ -1,7 +1,9 @@
 package com.example.sem3b_lab_1.artista;
 
+import com.example.sem3b_lab_1.dto.NewArtistaDto;
 import com.example.sem3b_lab_1.exceptions.ResourceConflictException;
 import com.example.sem3b_lab_1.exceptions.ResourceNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +19,14 @@ public class ArtistaController {
 
 
     @PostMapping
-    ResponseEntity<Artista> createArtista(@RequestBody Artista artista) {
-        Optional<Artista> foundArtistaByUsername = artistaRepository.findByUsername(artista.getUsername());
+    ResponseEntity<Artista> createArtista(@Valid @RequestBody NewArtistaDto artista) {
+        Artista newArtista = new Artista();
+        newArtista.setUsername(artista.getUsername());
+
+        Optional<Artista> foundArtistaByUsername = artistaRepository.findByUsername(newArtista.getUsername());
 
         if (foundArtistaByUsername.isEmpty())
-            return ResponseEntity.ok(artistaRepository.save(artista));
+            return ResponseEntity.ok(artistaRepository.save(newArtista));
 
         throw new ResourceConflictException("El artista con username " + artista.getUsername() + " ya existe");
     }
