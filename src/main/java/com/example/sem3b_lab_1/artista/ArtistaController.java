@@ -27,6 +27,8 @@ public class ArtistaController {
     @PostMapping
     ResponseEntity<Artista> createArtista(@Valid @RequestBody NewArtistaDto artista) {
         Artista newArtista = new Artista();
+//        newArtista.setUsername(artista.getUsername());
+//        newArtista.setDescripcion(artista.getDescripcion());
         modelMapper.map(artista, newArtista);
 
         Optional<Artista> foundArtistaByUsername = artistaRepository.findByUsername(newArtista.getUsername());

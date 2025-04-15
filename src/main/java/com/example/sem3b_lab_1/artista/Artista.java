@@ -17,6 +17,10 @@ public class Artista {
     @Column(unique = true)
     private String username;
 
+    private String descripcion;
+
+    private String email;
+
     @ManyToMany(mappedBy = "artistas")
     private List<Cancion> canciones;
 }
